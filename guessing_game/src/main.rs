@@ -11,8 +11,8 @@ fn main() {
     // create a non-mutable random number 1 <= x < 101
     let secret_number = rand::thread_rng().gen_range(1, 101);
 
-    // display the random number
-    println!("The secret number is: {}", secret_number);
+    // display the random number (for debugging)
+    // println!("The secret number is: {}", secret_number);
 
     // start an infinite loop
     loop {
@@ -28,8 +28,14 @@ fn main() {
             .expect("Failed to read line"); // crashes the program on invalid input, supresses a compiler warning
         
         // convert the guess into an integer
-        let guess: u32 = guess.trim().parse()
-            .expect("Please type a number.");
+            // restart the loop if the input is invalid
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_)  => {
+                println!("\"{}\" is not a valid number", guess.trim());
+                continue;
+            },
+        };
         
         // print the user's input
         println!("You guessed: {}", guess);
