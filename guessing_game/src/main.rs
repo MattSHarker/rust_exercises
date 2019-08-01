@@ -1,18 +1,47 @@
-use std::io;    // allows input and output
+extern crate rand;  // uses the "rand" crate
+
+use std::io;            // allows input and output
+use std::cmp::Ordering; // allows use of Ordering
+use rand::Rng;          // allows random number generation
 
 fn main() {
-    // print two lines to give the user the instructions
+    // display an introduction
     println!("Guess the number!");
-    println!("Please input your guess:");
 
-    // creates a mutable variable "guess" and
-        //assigns it an instance of an empty string 
-    let mut guess = String::new();
+    // create a non-mutable random number 1 <= x < 101
+    let secret_number = rand::thread_rng().gen_range(1, 101);
 
-    // read input from the user and assign it to "guess"
-    io::stdin().read_line(&mut guess)
-        .expect("Failed to read line"); // crashes the program on invalid input, supresses a compiler warning
-    
-    // print the user's input
-    println!("You guessed: {}", guess);
+    // display the random number
+    println!("The secret number is: {}", secret_number);
+
+    // start an infinite loop
+    loop {
+        // tell the user what to do
+        println!("Please input your guess:");
+
+        // create a mutable variable "guess" and
+            // assign it an instance of an empty string 
+        let mut guess = String::new();
+
+        // read input from the user and assign it to "guess"
+        io::stdin().read_line(&mut guess)
+            .expect("Failed to read line"); // crashes the program on invalid input, supresses a compiler warning
+        
+        // convert the guess into an integer
+        let guess: u32 = guess.trim().parse()
+            .expect("Please type a number.");
+        
+        // print the user's input
+        println!("You guessed: {}", guess);
+
+        // match expression to check guess against secret_number
+        match guess.cmp(&secret_number) {
+            Ordering::Less    => println!("Too small..."),
+            Ordering::Greater => println!("Too big..."),
+            Ordering::Equal   => {
+                println!("You got it!");
+                break;  // break out of the loop
+            }
+        }
+    }
 }
