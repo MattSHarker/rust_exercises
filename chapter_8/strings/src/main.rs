@@ -27,7 +27,11 @@ fn main() {
     let hello = String::from("Olá");
     let hello = String::from("Здравствуйте");
     let hello = String::from("Hola");
+    
+    // apparently emojis are in UTF-8
+    let elephant = String::from("🐘");
 
+    println!("Here's an elephant: {}", elephant);
 
     // appending to a string
     let mut s = String::from("The quick brown fox");
